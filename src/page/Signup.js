@@ -63,6 +63,8 @@ function SignUp(props) {
 
         console.log(username, nickname, password, "의 회원가입 요청을 dispatch 했습니다.");
         dispatch(userActions.signupDB(username, nickname, password));
+        setIsCheckUsername(false);
+        setIsCheckNickname(false);
     };
 
 
