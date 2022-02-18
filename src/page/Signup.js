@@ -1,10 +1,10 @@
-import React from 'react';
+import React from "react";
 
-function Signup(props) {
-    return (
-        <div>
-            <h1>냠냠</h1>
-        </div>
-    );
+import { Container, Button, Form } from "react-bootstrap";
+import "bootstrap/dist/css/bootstrap.min.css";
+
+const Signup = () => {
+
 }
+
 export default Signup;
