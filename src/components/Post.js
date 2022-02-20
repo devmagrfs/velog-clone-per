@@ -1,7 +1,20 @@
 import React from 'react';
 import styled from 'styled-components';
 
+import heart from '../Asset/heart.svg'
+
 function Post(props) {
+    const {
+        postingId,
+        title,
+        content,
+        dayBefore,
+        commentCnt,
+        nickname,
+        like,
+        imageFile,
+        userImage,
+    } = props;
 
     return (
         <PostContainer>
@@ -9,32 +22,58 @@ function Post(props) {
                 <a href="#" alt="">
                     <PostImageStyled>
                         <img
-                            src="https://mblogthumb-phinf.pstatic.net/20141204_276/firstgjp_14176838057819gNtv_JPEG/___.jpg?type=w2"
-                            alt="" />
+                            src={imageFile}
+                            alt="썸네일" />
                     </PostImageStyled>
                 </a>
-                <div style={{ display: "flex", flexDirection: "column", padding: "1rem" }}>
+                <div
+                    style={{
+                        display: "flex",
+                        flexDirection: "column",
+                        padding: "1rem"
+                    }}>
                     <a href="#" alt="" style={{ textDecoration: "none" }}>
-                        <h4 style={{ color: "#ECECEC" }}>안녕하세요, 프론트엔드 신입에 지원합니다.</h4>
+                        <h4 style={{ color: "#ECECEC" }}>{title}</h4>
                         <div>
-                            <p style={{ color: "#D9D9D9" }}>개발자가 되려고 결심한 이유는 모릅니다</p>
+                            <PostContentStyled style={{ color: "#D9D9D9" }}>{content}</PostContentStyled>
                         </div>
                     </a>
 
-                    <div style={{ fontSize: "0.75rem", lineHeight: 1.5, color: "#ACACAC" }}>
-                        <span>날짜</span>
+                    <div
+                        style={{
+                            fontSize: "0.75rem",
+                            lineHeight: 1.5,
+                            color: "#ACACAC"
+                        }}>
+                        <span>{dayBefore}</span>
                         <span className="separator">·</span>
-                        <span>댓글 갯수</span>
+                        <span>{commentCnt}개의 댓글</span>
                     </div>
                 </div>
                 <PostUserBoxStyled style={{ textDecoration: "none" }}>
                     <a href="#">
-                        <img src="" alt="" />
-                        <span style={{ color: "#ACACAC" }}>by  <b style={{ color: "#ECECEC" }}>이름</b></span>
+                        <img
+                            src={userImage}
+                            alt=""
+                            style={{
+                                objectFit: "cover",
+                                borderRadius: "50%",
+                                width: "1.5rem",
+                                height: "1.5rem",
+                                marginRight: "0.5rem"
+                            }}
+                        />
+                        <span style={{ color: "#ACACAC" }}>by  <b style={{ color: "#ECECEC" }}>{nickname}</b></span>
                     </a>
                     <div className="likes" style={{ alignItems: "center", color: "#ECECEC" }}>
-                        <span>하트, </span>
-                        라이크 갯수
+                        <svg
+                            width="24"
+                            height="24"
+                            viewBox="0 0 24 24"
+                            style={{ width: "0.75rem", height: "0.75rem", marginRight: "0.5rem" }}>
+                            <path fill="currentColor" d="M18 1l-6 4-6-4-6 5v7l12 10 12-10v-7z"></path>
+                        </svg>
+                        {like}
                     </div>
                 </PostUserBoxStyled>
             </PostStyled>
@@ -75,6 +114,17 @@ const PostImageStyled = styled.div`
         display: block;
         object-fit: cover;
     }
+`
+
+const PostContentStyled = styled.p`
+    margin: 0px 0px 1.5rem;
+    word-break: break-word;
+    overflow-wrap: break-word;
+    font-size: 0.875rem;
+    line-height: 1.5;
+    height: 3.9375rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
 `
 
 const PostUserBoxStyled = styled.div`

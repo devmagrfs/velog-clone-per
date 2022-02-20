@@ -1,28 +1,29 @@
 import React from 'react';
 import styled from 'styled-components';
 import { useDispatch } from 'react-redux';
-import { Dropdown } from "react-bootstrap";
-import "bootstrap/dist/css/bootstrap.min.css";
+import { useHistory } from 'react-router-dom';
 
 import PostList from '../components/PostList';
 import { actionCreators as postActions } from '../redux/modules/post';
 
 
-function Main(props) {
+function MainRecent(props) {
+    const history = useHistory();
     const dispatch = useDispatch();
 
-    const trendingPost = () => {
-        dispatch(postActions.getLikePostMonthDB());
-    }
+    React.useEffect(() => {
+        // dispatch(postActions.getDatePostDB());
+    }, [])
 
 
+    //style={{ display: "flex", width: "7rem", alignItems: "center", justifyContent: "center", fontSize: "1.125rem", height: "3rem", textDecoration: "none" }}
     return (
         <div style={{ width: "90%", margin: "0 auto" }}>
             <PostListHeader>
                 <PostListTrandingHeader>
                     <div style={{ display: "flex", position: "relative", width: "14rem", alignItems: "center" }}>
                         <div style={{ display: "flex", alignItems: "center" }}>
-                            <PostTrendingBox as="a" href="/" onClick={trendingPost}>
+                            <PostTrendingBox as="a" href="/" >
                                 <svg stroke="currentColor" fill="currentColor" viewBox="0 0 24 24" height="1em" width="1.3em" xmlns="http://www.w3.org/2000/svg">
                                     <path d="M16 6l2.29 2.29-4.88 4.88-4-4L2 16.59 3.41 18l6-6 4 4 6.3-6.29L22 12V6z"></path>
                                 </svg>
@@ -35,22 +36,7 @@ function Main(props) {
                                 최신
                             </PostRecentBox>
                         </div>
-                        <div style={{ width: "50%", height: "2px", position: "absolute", bottom: "0px", backgroundColor: "#E0E0E0" }}></div>
-                        <Dropdown>
-                            <Dropdown.Toggle id="dropdown-button-dark-example1" variant="secondary">
-                                이번 주
-                            </Dropdown.Toggle>
-
-                            <Dropdown.Menu variant="dark">
-                                <Dropdown.Item href="#/action-1">
-                                    오늘
-                                </Dropdown.Item>
-                                <Dropdown.Item href="#/action-2" active>이번 주</Dropdown.Item>
-                                <Dropdown.Item >이번 달</Dropdown.Item>
-                                {/* <Dropdown.Divider />
-                                <Dropdown.Item href="#/action-4">Separated link</Dropdown.Item> */}
-                            </Dropdown.Menu>
-                        </Dropdown>
+                        <div style={{ left: "50%", width: "50%", height: "2px", position: "absolute", bottom: "0px", backgroundColor: "#E0E0E0" }}></div>
                     </div>
                 </PostListTrandingHeader>
                 <div style={{}}>...</div>
@@ -108,4 +94,4 @@ const PostRecentBox = styled.div`
     }
 `
 
-export default Main;
+export default MainRecent;
