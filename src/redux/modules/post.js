@@ -1,5 +1,6 @@
 import { createAction, handleActions } from "redux-actions";
 import produce from "immer";
+import axios from 'axios';
 
 import apis from '../../common/api';
 
@@ -14,38 +15,29 @@ const GET_POST = "GET_POST";
 const ADD_POST = "ADD_POST";
 
 
+
 // action creators
 const getPost = createAction(GET_POST, (post_list) => ({ post_list }));
-const addPost = createAction(ADD_POST, (post_list) => ({ post_list }));
+const addPost = createAction(ADD_POST, (post) => ({ post }));
+
 
 
 //middleware actions
 const getDatePostDB = () => {
     return async function (dispatch, getState, { history }) {
-        const token = localStorage.getItem('token');
-        await apis.get('/api/posting', {
-            headers: {
-                Authorization:
-                    `${token}`
-            }
-        }).then((response) => {
-            console.log((response.data))
-            dispatch(getPost(response.data))
-        }).catch((err) => {
-            console.log(err)
-        })
+        await axios.get('http://yuseon.shop/api/posting')
+            .then((response) => {
+                console.log("response", response.data.articles)
+                dispatch(getPost(response.data.articles))
+            }).catch((err) => {
+                console.log(err)
+            })
     }
 }
 
 const getLikePostMonthDB = () => {
     return async function (dispatch, getState, { history }) {
-        const token = localStorage.getItem('token');
-        await apis.get('/api/posting/likes/month', {
-            headers: {
-                Authorization:
-                    `${token}`
-            }
-        }).then((response) => {
+        await apis.get('http://yuseon.shop/api/posting/likes/month',).then((response) => {
             console.log((response.data))
             dispatch(getPost(response.data))
         }).catch((err) => {
@@ -56,13 +48,7 @@ const getLikePostMonthDB = () => {
 
 const getLikePostWeekDB = () => {
     return async function (dispatch, getState, { history }) {
-        const token = localStorage.getItem('token');
-        await apis.get('/api/posting/likes/week', {
-            headers: {
-                Authorization:
-                    `${token}`
-            }
-        }).then((response) => {
+        await apis.get('http://yuseon.shop/api/posting/likes/week').then((response) => {
             console.log((response.data))
             dispatch(getPost(response.data))
         }).catch((err) => {
@@ -73,13 +59,7 @@ const getLikePostWeekDB = () => {
 
 const getLikePostTodayDB = () => {
     return async function (dispatch, getState, { history }) {
-        const token = localStorage.getItem('token');
-        await apis.get('/api/posting/likes/today', {
-            headers: {
-                Authorization:
-                    `${token}`
-            }
-        }).then((response) => {
+        await apis.get('http://yuseon.shop/api/posting/today').then((response) => {
             console.log((response.data))
             dispatch(getPost(response.data))
         }).catch((err) => {
@@ -88,15 +68,9 @@ const getLikePostTodayDB = () => {
     }
 }
 
-// "title": "제목",
-// "content": "내용",
-// "imageFile" : "test1234.jpg",
-// ”nickname” : “iamName”,
-// ”tag”:[a, b, c]
-
 const addPostDB = () => {
     return async function (dispatch, getState, { history }) {
-        const token = localStorage.getItem('token');
+        const token = sessionStorage.getItem('token');
         const form = new FormData();
         // form.append()
 

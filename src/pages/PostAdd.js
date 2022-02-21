@@ -26,20 +26,8 @@ export default function PostAdd() {
     const [title, setTitle] = React.useState("");
     const [hashtag, setHashtag] = React.useState("");
     const [hashArr, setHashArr] = React.useState([]);
-
-    const changeTitle = (e) => {
-        setTitle(e.target.value);
-    }
-
-    const postWrite = () => {
-        if (contents === "" || title === "") {
-            window.alert("내용을 입력해주세요.");
-            return;
-        }
-
-        dispatch(postActions.addPostDB())
-        editorRef.current.value = "";
-    }
+    const token = sessionStorage.getItem("token");
+    const imageUrlList = [];
 
     React.useEffect(() => {
         if (editorRef.current) {
@@ -52,24 +40,26 @@ export default function PostAdd() {
                 .addHook("addImageBlobHook", (blob, callback) => {
                     (async () => {
                         let formData = new FormData();
-                        formData.append("file", blob);
+                        formData.append("image", blob);
 
+                        console.log("image", blob)
                         console.log("이미지가 업로드 됐습니다.");
 
-                        const { data: filename } = await axios.post(
-                            "/file/upload",
-                            formData,
-                            {
-                                header: { "content-type": "multipart/formdata" },
+                        await axios.post("http://yuseon.shop/api/posting/image",
+                            formData, {
+                            headers: {
+                                "Authorization": `${token}`,
                             }
-                        );
+                        },
+                        ).then((res) => {
+                            console.log(res.data);
+                            const imageUrl = res.data
 
-                        const imageUrl = "http://localhost:8080/file/upload/" + filename;
-
-                        // Image 를 가져올 수 있는 URL 을 callback 메서드에 넣어주면 자동으로 이미지를 가져온다.
-                        callback(imageUrl, "iamge");
+                            // Image 를 가져올 수 있는 URL 을 callback 메서드에 넣어주면 자동으로 이미지를 가져온다.
+                            callback(imageUrl, "image");
+                            imageUrlList.push(imageUrl)
+                        })
                     })();
-
                     return false;
                 });
         }
@@ -78,6 +68,19 @@ export default function PostAdd() {
     }, [editorRef]);
 
 
+    const changeTitle = (e) => {
+        setTitle(e.target.value);
+    }
+
+    const postWrite = () => {
+        if (contents === "" || title === "") {
+            window.alert("내용을 입력해주세요.");
+            return;
+        }
+
+        dispatch(postActions.addPostDB(title, contents,))
+        editorRef.current.value = "";
+    }
 
 
     return (
@@ -117,6 +120,7 @@ export default function PostAdd() {
 
                 <TitleFooter />
             </div>
+
             <div style={{
                 paddingLeft: "2rem",
                 paddingRight: "2rem",
@@ -135,30 +139,8 @@ export default function PostAdd() {
                     ref={editorRef}
                     theme='dark'
                 />
-
-
-                {/* <div class="sc-dSfdvi gaQEvd" style="width: 646px;">
-                    <div class="sc-jivBlf koLpTv">
-                        <button class="sc-jvvksu iHbtuu">
-                            <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"></path>
-                            </svg>
-                            <span>나가기</span>
-                        </button>
-                        <div class="sc-hkgtus gyNfph">
-                            <button color="transparent" class="sc-pVTFL hLiqkr sc-bSqaIl kMrvMh">
-                                임시저장
-                            </button>
-                            <button color="teal" class="sc-pVTFL bTEpzi sc-bSqaIl kMrvMh">
-                                출간하기
-                            </button>
-                        </div>
-                    </div>
-                </div> */}
-
-
-
             </div>
+
             <WriteFooterOuter>
                 <WriteFooterInner>
                     <ExitBtn>
