@@ -10,6 +10,7 @@ import { actionCreators as userActions } from '../redux/modules/user';
 
 function SignUp(props) {
     const dispatch = useDispatch();
+    const fileInput = React.useRef();
 
     const [username, setUsername] = React.useState("");
     const [nickname, setNickname] = React.useState("");
@@ -40,6 +41,15 @@ function SignUp(props) {
         setIsCheckNickname(true)
     }
 
+    const onChangeImg = (e) => {
+        e.preventDefault();
+
+        if (e.target.files) {
+            const uploadFile = e.target.files[0]
+            console.log(uploadFile)
+        }
+    }
+
     const signup = (e) => {
         e.preventDefault()
 
@@ -57,8 +67,9 @@ function SignUp(props) {
             return;
         }
 
+        const file = fileInput.current.files[0];
         console.log(username, nickname, password, "의 회원가입 요청을 dispatch 했습니다.");
-        dispatch(userActions.signupDB(username, nickname, password));
+        dispatch(userActions.signupDB(username, nickname, password, file));
         setIsCheckUsername(false);
         setIsCheckNickname(false);
     };
@@ -142,7 +153,7 @@ function SignUp(props) {
 
                         <Form.Group controlId="formFile" className="mb-3">
                             <Form.Label>프로필 사진</Form.Label>
-                            <Form.Control type="file" />
+                            <Form.Control type="file" onChange={onChangeImg} ref={fileInput} />
                         </Form.Group>
 
                         <Button variant="success" type="submit" onClick={signup}>

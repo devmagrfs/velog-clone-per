@@ -14,7 +14,8 @@ import PostAdd from '../pages/PostAdd';
 
 function App() {
   return (
-    <div className="App" style={{ backgroundColor: "#121212" }}>
+    // style={{ backgroundColor: "#121212" }}
+    <div className="App" >
       <Header />
       <ConnectedRouter history={history}>
         <Route path="/login" exact component={Login} />

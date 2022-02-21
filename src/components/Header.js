@@ -60,7 +60,7 @@ const Header = (props) => {
 					<Navbar.Collapse id="responsive-navbar-nav">
 						<Nav className="me-auto"></Nav>
 						<Nav>
-							<Nav.Link style={{ color: "#ececec" }} href="" onClick={() => { history.push('/signup') }}>
+							<Nav.Link style={{ color: "#ececec" }} href="" onClick={() => { history.push('/user/signup') }}>
 								회원가입
 							</Nav.Link>
 							<Nav.Link
