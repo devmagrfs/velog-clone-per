@@ -65,13 +65,12 @@ const checkNicknameDB = (nickname, isCheckNickname) => {
 
 const signupDB = (username, nickname, password, ProfileImage) => {
     return async function (dispatch, getState, { history }) {
-        console.log(username, nickname, password)
+        console.log(username, nickname, password, ProfileImage)
         const form = new FormData();
         form.append('username', username);
         form.append('nickname', nickname);
         form.append('password', password);
         form.append('profileImage', ProfileImage ? ProfileImage : null)
-        // ProfileImage: ProfileImage ? ProfileImage : null,
 
         await apis
             .post("/user/signup", form)

@@ -12,11 +12,10 @@ function MainRecent(props) {
     const dispatch = useDispatch();
 
     React.useEffect(() => {
-        // dispatch(postActions.getDatePostDB());
+        dispatch(postActions.getDatePostDB());
     }, [])
 
 
-    //style={{ display: "flex", width: "7rem", alignItems: "center", justifyContent: "center", fontSize: "1.125rem", height: "3rem", textDecoration: "none" }}
     return (
         <div style={{ width: "90%", margin: "0 auto" }}>
             <PostListHeader>
