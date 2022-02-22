@@ -4,7 +4,7 @@ import axios from 'axios';
 import styled from 'styled-components';
 import TextAreaAutoResize from "react-textarea-autosize";
 
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { actionCreators as postActions } from '../redux/modules/post';
 
 // 여기 css를 수정해서 코드 하이라이팅 커스텀 가능
@@ -26,8 +26,10 @@ export default function PostAdd() {
     const [title, setTitle] = React.useState("");
     const [hashtag, setHashtag] = React.useState("");
     const [hashArr, setHashArr] = React.useState([]);
+    const [previewUrlList, setPreviewUrlList] = React.useState([]);
     const token = sessionStorage.getItem("token");
-    const imageUrlList = [];
+
+    const user_info = useSelector(state => state.user.userInfo)
 
     React.useEffect(() => {
         if (editorRef.current) {
@@ -41,9 +43,6 @@ export default function PostAdd() {
                     (async () => {
                         let formData = new FormData();
                         formData.append("image", blob);
-
-                        console.log("image", blob)
-                        console.log("이미지가 업로드 됐습니다.");
 
                         await axios.post("http://yuseon.shop/api/posting/image",
                             formData, {
@@ -59,8 +58,7 @@ export default function PostAdd() {
                             callback(imageUrl, "image");
                             return imageUrl;
                         }).then((res) => {
-                            console.log(res)
-                            imageUrlList.push(res)
+                            setPreviewUrlList(previewUrlList.concat(res))
                         })
                     })();
                     return false;
@@ -81,7 +79,7 @@ export default function PostAdd() {
             return;
         }
 
-        dispatch(postActions.addPostDB(title, contents,))
+        dispatch(postActions.addPostDB(title, contents, previewUrlList, user_info.nickname, hashArr))
         editorRef.current.value = "";
     }
 
